@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>My New Post | Lisongzhe&#39;s blog</title>
+  <title>iOS 二叉树题目 | Lisongzhe&#39;s blog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -231,11 +231,185 @@
       </time>
     
 </span>
-                <h1>My New Post</h1>
+                <h1>iOS 二叉树题目</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		
+      		<p>树是一种比较重要的数据结构，尤其是二叉树。二叉树是一种特殊的树，在二叉树中每个节点最多有两个子节点，一般称为左子节点和右子节点（或左孩子和右孩子），并且二叉树的子树有左右之分，其次序不能任意颠倒。二叉树是递归定义的，因此，与二叉树有关的题目基本都可以用递归思想解决，当然有些题目非递归解法也应该掌握，如非递归遍历节点等等。本文努力对二叉树相关题目做一个较全的整理总结，希望对找工作的同学有所帮助。</p>
+<p>二叉树节点定义如下：<br>struct BinaryTreeNode<br>{<br>int m_nValue;<br>BinaryTreeNode<em> m_pLeft;<br>BinaryTreeNode</em> m_pRight;<br>};</p>
+<p>相关链接：<br>轻松搞定面试中的链表题目</p>
+<p>题目列表：</p>
+<ol>
+<li>求二叉树中的节点个数</li>
+<li>求二叉树的深度</li>
+<li>前序遍历，中序遍历，后序遍历<br>4.分层遍历二叉树（按层次从上往下，从左往右）</li>
+<li>将二叉查找树变为有序的双向链表</li>
+<li>求二叉树第K层的节点个数</li>
+<li>求二叉树中叶子节点的个数</li>
+<li>判断两棵二叉树是否结构相同</li>
+<li>判断二叉树是不是平衡二叉树</li>
+<li>求二叉树的镜像</li>
+<li>求二叉树中两个节点的最低公共祖先节点</li>
+<li>求二叉树中节点的最大距离</li>
+<li>由前序遍历序列和中序遍历序列重建二叉树<br>14.判断二叉树是不是完全二叉树</li>
+</ol>
+<p>详细解答</p>
+<ol>
+<li>求二叉树中的节点个数<br>递归解法：<br>（1）如果二叉树为空，节点个数为0<br>（2）如果二叉树不为空，二叉树节点个数 = 左子树节点个数 + 右子树节点个数 + 1<br>参考代码如下：</li>
+</ol>
+<p>[cpp] view plaincopy</p>
+<p>int GetNodeNum(BinaryTreeNode * pRoot)<br>{<br>if(pRoot == NULL) // 递归出口<br>return 0;<br>return GetNodeNum(pRoot-&gt;m_pLeft) + GetNodeNum(pRoot-&gt;m_pRight) + 1;<br>}  </p>
+<ol>
+<li>求二叉树的深度</li>
+</ol>
+<p>递归解法：</p>
+<p>（1）如果二叉树为空，二叉树的深度为0</p>
+<p>（2）如果二叉树不为空，二叉树的深度 = max(左子树深度，右子树深度) + 1</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>int GetDepth(BinaryTreeNode * pRoot)<br>{<br>if(pRoot == NULL) // 递归出口<br>return 0;<br>int depthLeft = GetDepth(pRoot-&gt;m_pLeft);<br>int depthRight = GetDepth(pRoot-&gt;m_pRight);<br>return depthLeft &gt; depthRight ? (depthLeft + 1) : (depthRight + 1);<br>}  </p>
+<ol>
+<li>前序遍历，中序遍历，后序遍历</li>
+</ol>
+<p>前序遍历递归解法：</p>
+<p>（1）如果二叉树为空，空操作</p>
+<p>（2）如果二叉树不为空，访问根节点，前序遍历左子树，前序遍历右子树</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>void PreOrderTraverse(BinaryTreeNode * pRoot)<br>{<br>if(pRoot == NULL)<br>return;<br>Visit(pRoot); // 访问根节点<br>PreOrderTraverse(pRoot-&gt;m_pLeft); // 前序遍历左子树<br>PreOrderTraverse(pRoot-&gt;m_pRight); // 前序遍历右子树<br>}  </p>
+<p>中序遍历递归解法</p>
+<p>（1）如果二叉树为空，空操作。</p>
+<p>（2）如果二叉树不为空，中序遍历左子树，访问根节点，中序遍历右子树</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>void InOrderTraverse(BinaryTreeNode * pRoot)<br>{<br>if(pRoot == NULL)<br>return;<br>InOrderTraverse(pRoot-&gt;m_pLeft); // 中序遍历左子树<br>Visit(pRoot); // 访问根节点<br>InOrderTraverse(pRoot-&gt;m_pRight); // 中序遍历右子树<br>}  </p>
+<p>后序遍历递归解法</p>
+<p>（1）如果二叉树为空，空操作</p>
+<p>（2）如果二叉树不为空，后序遍历左子树，后序遍历右子树，访问根节点</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>void PostOrderTraverse(BinaryTreeNode * pRoot)<br>{<br>if(pRoot == NULL)<br>return;<br>PostOrderTraverse(pRoot-&gt;m_pLeft); // 后序遍历左子树<br>PostOrderTraverse(pRoot-&gt;m_pRight); // 后序遍历右子树<br>Visit(pRoot); // 访问根节点<br>}  </p>
+<p>4.分层遍历二叉树（按层次从上往下，从左往右）</p>
+<p>相当于广度优先搜索，使用队列实现。队列初始化，将根节点压入队列。当队列不为空，进行如下操作：弹出一个节点，访问，若左子节点或右子节点不为空，将其压入队列。</p>
+<p>[cpp] view plaincopy</p>
+<p>void LevelTraverse(BinaryTreeNode <em> pRoot)<br>{<br>if(pRoot == NULL)<br>return;<br>queue&lt;BinaryTreeNode </em>&gt; q;<br>q.push(pRoot);<br>while(!q.empty())<br>{<br>BinaryTreeNode * pNode = q.front();<br>q.pop();<br>Visit(pNode); // 访问节点<br>if(pNode-&gt;m_pLeft != NULL)<br>q.push(pNode-&gt;m_pLeft);<br>if(pNode-&gt;m_pRight != NULL)<br>q.push(pNode-&gt;m_pRight);<br>}<br>return;<br>}  </p>
+<ol>
+<li>将二叉查找树变为有序的双向链表</li>
+</ol>
+<p>要求不能创建新节点，只调整指针。</p>
+<p>递归解法：</p>
+<p>（1）如果二叉树查找树为空，不需要转换，对应双向链表的第一个节点是NULL，最后一个节点是NULL</p>
+<p>（2）如果二叉查找树不为空：</p>
+<p>如果左子树为空，对应双向有序链表的第一个节点是根节点，左边不需要其他操作；</p>
+<p>如果左子树不为空，转换左子树，二叉查找树对应双向有序链表的第一个节点就是左子树转换后双向有序链表的第一个节点，同时将根节点和左子树转换后的双向有序链 表的最后一个节点连接；</p>
+<p>如果右子树为空，对应双向有序链表的最后一个节点是根节点，右边不需要其他操作；</p>
+<p>如果右子树不为空，对应双向有序链表的最后一个节点就是右子树转换后双向有序链表的最后一个节点，同时将根节点和右子树转换后的双向有序链表的第一个节点连 接。</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>/<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>参数：<br>pRoot: 二叉查找树根节点指针<br>pFirstNode: 转换后双向有序链表的第一个节点指针<br>pLastNode: 转换后双向有序链表的最后一个节点指针<br><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>/<br>void Convert(BinaryTreeNode <em> pRoot,<br>BinaryTreeNode </em> &amp; pFirstNode, BinaryTreeNode <em> &amp; pLastNode)<br>{<br>BinaryTreeNode </em>pFirstLeft, <em>pLastLeft, </em> pFirstRight, *pLastRight;<br>if(pRoot == NULL)<br>{<br>pFirstNode = NULL;<br>pLastNode = NULL;<br>return;<br>}  </p>
+<p>if(pRoot-&gt;m_pLeft == NULL)<br>{<br>// 如果左子树为空，对应双向有序链表的第一个节点是根节点<br>pFirstNode = pRoot;<br>}<br>else<br>{<br>Convert(pRoot-&gt;m_pLeft, pFirstLeft, pLastLeft);<br>// 二叉查找树对应双向有序链表的第一个节点就是左子树转换后双向有序链表的第一个节点<br>pFirstNode = pFirstLeft;<br>// 将根节点和左子树转换后的双向有序链表的最后一个节点连接<br>pRoot-&gt;m_pLeft = pLastLeft;<br>pLastLeft-&gt;m_pRight = pRoot;<br>}  </p>
+<p>if(pRoot-&gt;m_pRight == NULL)<br>{<br>// 对应双向有序链表的最后一个节点是根节点<br>pLastNode = pRoot;<br>}<br>else<br>{<br>Convert(pRoot-&gt;m_pRight, pFirstRight, pLastRight);<br>// 对应双向有序链表的最后一个节点就是右子树转换后双向有序链表的最后一个节点<br>pLastNode = pLastRight;<br>// 将根节点和右子树转换后的双向有序链表的第一个节点连接<br>pRoot-&gt;m_pRight = pFirstRight;<br>pFirstRight-&gt;m_pRight = pRoot;<br>}  </p>
+<p>return;<br>}  </p>
+<ol>
+<li>求二叉树第K层的节点个数</li>
+</ol>
+<p>递归解法：</p>
+<p>（1）如果二叉树为空或者k&lt;1返回0</p>
+<p>（2）如果二叉树不为空并且k==1，返回1</p>
+<p>（3）如果二叉树不为空且k&gt;1，返回左子树中k-1层的节点个数与右子树k-1层节点个数之和</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>int GetNodeNumKthLevel(BinaryTreeNode * pRoot, int k)<br>{<br>if(pRoot == NULL || k &lt; 1)<br>return 0;<br>if(k == 1)<br>return 1;<br>int numLeft = GetNodeNumKthLevel(pRoot-&gt;m_pLeft, k-1); // 左子树中k-1层的节点个数<br>int numRight = GetNodeNumKthLevel(pRoot-&gt;m_pRight, k-1); // 右子树中k-1层的节点个数<br>return (numLeft + numRight);<br>}  </p>
+<ol>
+<li>求二叉树中叶子节点的个数</li>
+</ol>
+<p>递归解法：</p>
+<p>（1）如果二叉树为空，返回0</p>
+<p>（2）如果二叉树不为空且左右子树为空，返回1</p>
+<p>（3）如果二叉树不为空，且左右子树不同时为空，返回左子树中叶子节点个数加上右子树中叶子节点个数</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>int GetLeafNodeNum(BinaryTreeNode * pRoot)<br>{<br>if(pRoot == NULL)<br>return 0;<br>if(pRoot-&gt;m_pLeft == NULL &amp;&amp; pRoot-&gt;m_pRight == NULL)<br>return 1;<br>int numLeft = GetLeafNodeNum(pRoot-&gt;m_pLeft); // 左子树中叶节点的个数<br>int numRight = GetLeafNodeNum(pRoot-&gt;m_pRight); // 右子树中叶节点的个数<br>return (numLeft + numRight);<br>}  </p>
+<ol>
+<li>判断两棵二叉树是否结构相同</li>
+</ol>
+<p>不考虑数据内容。结构相同意味着对应的左子树和对应的右子树都结构相同。</p>
+<p>递归解法：</p>
+<p>（1）如果两棵二叉树都为空，返回真</p>
+<p>（2）如果两棵二叉树一棵为空，另一棵不为空，返回假</p>
+<p>（3）如果两棵二叉树都不为空，如果对应的左子树和右子树都同构返回真，其他返回假</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>bool StructureCmp(BinaryTreeNode <em> pRoot1, BinaryTreeNode </em> pRoot2)<br>{<br>if(pRoot1 == NULL &amp;&amp; pRoot2 == NULL) // 都为空，返回真<br>return true;<br>else if(pRoot1 == NULL || pRoot2 == NULL) // 有一个为空，一个不为空，返回假<br>return false;<br>bool resultLeft = StructureCmp(pRoot1-&gt;m_pLeft, pRoot2-&gt;m_pLeft); // 比较对应左子树<br>bool resultRight = StructureCmp(pRoot1-&gt;m_pRight, pRoot2-&gt;m_pRight); // 比较对应右子树<br>return (resultLeft &amp;&amp; resultRight);<br>}   </p>
+<ol>
+<li>判断二叉树是不是平衡二叉树</li>
+</ol>
+<p>递归解法：</p>
+<p>（1）如果二叉树为空，返回真</p>
+<p>（2）如果二叉树不为空，如果左子树和右子树都是AVL树并且左子树和右子树高度相差不大于1，返回真，其他返回假</p>
+<p>参考代码：</p>
+<p>[cpp] view plaincopy</p>
+<p>bool IsAVL(BinaryTreeNode * pRoot, int &amp; height)<br>{<br>if(pRoot == NULL) // 空树，返回真<br>{<br>height = 0;<br>return true;<br>}<br>int heightLeft;<br>bool resultLeft = IsAVL(pRoot-&gt;m_pLeft, heightLeft);<br>int heightRight;<br>bool resultRight = IsAVL(pRoot-&gt;m_pRight, heightRight);<br>if(resultLeft &amp;&amp; resultRight &amp;&amp; abs(heightLeft - heightRight) &lt;= 1) // 左子树和右子树都是AVL，并且高度相差不大于1，返回真<br>{<br>height = max(heightLeft, heightRight) + 1;<br>return true;<br>}<br>else<br>{<br>height = max(heightLeft, heightRight) + 1;<br>return false;<br>}<br>}  </p>
+<ol>
+<li>求二叉树的镜像</li>
+</ol>
+<p>递归解法：</p>
+<p>（1）如果二叉树为空，返回空</p>
+<p>（2）如果二叉树不为空，求左子树和右子树的镜像，然后交换左子树和右子树</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>BinaryTreeNode <em> Mirror(BinaryTreeNode </em> pRoot)<br>{<br>if(pRoot == NULL) // 返回NULL<br>return NULL;<br>BinaryTreeNode <em> pLeft = Mirror(pRoot-&gt;m_pLeft); // 求左子树镜像<br>BinaryTreeNode </em> pRight = Mirror(pRoot-&gt;m_pRight); // 求右子树镜像<br>// 交换左子树和右子树<br>pRoot-&gt;m_pLeft = pRight;<br>pRoot-&gt;m_pRight = pLeft;<br>return pRoot;<br>}  </p>
+<ol>
+<li>求二叉树中两个节点的最低公共祖先节点</li>
+</ol>
+<p>递归解法：</p>
+<p>（1）如果两个节点分别在根节点的左子树和右子树，则返回根节点</p>
+<p>（2）如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>bool FindNode(BinaryTreeNode <em> pRoot, BinaryTreeNode </em> pNode)<br>{<br>if(pRoot == NULL || pNode == NULL)<br>return false;  </p>
+<p>if(pRoot == pNode)<br>return true;  </p>
+<p>bool found = FindNode(pRoot-&gt;m_pLeft, pNode);<br>if(!found)<br>found = FindNode(pRoot-&gt;m_pRight, pNode);  </p>
+<p>return found;<br>}  </p>
+<p>BinaryTreeNode <em> GetLastCommonParent(BinaryTreeNode </em> pRoot,<br>BinaryTreeNode <em> pNode1,<br>BinaryTreeNode </em> pNode2)<br>{<br>if(FindNode(pRoot-&gt;m_pLeft, pNode1))<br>{<br>if(FindNode(pRoot-&gt;m_pRight, pNode2))<br>return pRoot;<br>else<br>return GetLastCommonParent(pRoot-&gt;m_pLeft, pNode1, pNode2);<br>}<br>else<br>{<br>if(FindNode(pRoot-&gt;m_pLeft, pNode2))<br>return pRoot;<br>else<br>return GetLastCommonParent(pRoot-&gt;m_pRight, pNode1, pNode2);<br>}<br>}  </p>
+<p>递归解法效率很低，有很多重复的遍历，下面看一下非递归解法。</p>
+<p>非递归解法：</p>
+<p>先求从根节点到两个节点的路径，然后再比较对应路径的节点就行，最后一个相同的节点也就是他们在二叉树中的最低公共祖先节点</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>bool GetNodePath(BinaryTreeNode <em> pRoot, BinaryTreeNode </em> pNode,<br>list<binarytreenode *=""> &amp; path)<br>{<br>if(pRoot == pNode)<br>{<br>path.push_back(pRoot);<br>return true;<br>}<br>if(pRoot == NULL)<br>return false;<br>path.push_back(pRoot);<br>bool found = false;<br>found = GetNodePath(pRoot-&gt;m_pLeft, pNode, path);<br>if(!found)<br>found = GetNodePath(pRoot-&gt;m_pRight, pNode, path);<br>if(!found)<br>path.pop_back();<br>return found;<br>}<br>BinaryTreeNode <em> GetLastCommonParent(BinaryTreeNode </em> pRoot, BinaryTreeNode <em> pNode1, BinaryTreeNode </em> pNode2)<br>{<br>if(pRoot == NULL || pNode1 == NULL || pNode2 == NULL)<br>return NULL;<br>list<binarytreenode*> path1;<br>bool bResult1 = GetNodePath(pRoot, pNode1, path1);<br>list<binarytreenode*> path2;<br>bool bResult2 = GetNodePath(pRoot, pNode2, path2);<br>if(!bResult1 || !bResult2)<br>return NULL;<br>BinaryTreeNode <em> pLast = NULL;<br>list&lt;BinaryTreeNode</em>&gt;::const_iterator iter1 = path1.begin();<br>list<binarytreenode*>::const_iterator iter2 = path2.begin();<br>while(iter1 != path1.end() &amp;&amp; iter2 != path2.end())<br>{<br>if(<em>iter1 == </em>iter2)<br>pLast = *iter1;<br>else<br>break;<br>iter1++;<br>iter2++;<br>}<br>return pLast;<br>}  </binarytreenode*></binarytreenode*></binarytreenode*></binarytreenode></p>
+<p>在上述算法的基础上稍加变化即可求二叉树中任意两个节点的距离了。</p>
+<ol>
+<li>求二叉树中节点的最大距离</li>
+</ol>
+<p>即二叉树中相距最远的两个节点之间的距离。</p>
+<p>递归解法：</p>
+<p>（1）如果二叉树为空，返回0，同时记录左子树和右子树的深度，都为0</p>
+<p>（2）如果二叉树不为空，最大距离要么是左子树中的最大距离，要么是右子树中的最大距离，要么是左子树节点中到根节点的最大距离+右子</p>
+<p>树节点中到根节点的最大距离，同时记录左子树和右子树节点中到根节点的最大距离。</p>
+<p>参考代码如下：</p>
+<p>[cpp] view plaincopy</p>
+<p>int GetMaxDistance(BinaryTreeNode * pRoot, int &amp; maxLeft, int &amp; maxRight)<br>{<br>// maxLeft, 左子树中的节点距离根节点的最远距离<br>// maxRight, 右子树中的节点距离根节点的最远距离<br>if(pRoot == NULL)<br>{<br>maxLeft = 0;<br>maxRight = 0;<br>return 0;<br>}<br>int maxLL, maxLR, maxRL, maxRR;<br>int maxDistLeft, maxDistRight;<br>if(pRoot-&gt;m_pLeft != NULL)<br>{<br>maxDistLeft = GetMaxDistance(pRoot-&gt;m_pLeft, maxLL, maxLR);<br>maxLeft = max(maxLL, maxLR) + 1;<br>}<br>else<br>{<br>maxDistLeft = 0;<br>maxLeft = 0;<br>}<br>if(pRoot-&gt;m_pRight != NULL)<br>{<br>maxDistRight = GetMaxDistance(pRoot-&gt;m_pRight, maxRL, maxRR);<br>maxRight = max(maxRL, maxRR) + 1;<br>}<br>else<br>{<br>maxDistRight = 0;<br>maxRight = 0;<br>}<br>return max(max(maxDistLeft, maxDistRight), maxLeft+maxRight);<br>}  </p>
+<ol>
+<li>由前序遍历序列和中序遍历序列重建二叉树</li>
+</ol>
+<p>二叉树前序遍历序列中，第一个元素总是树的根节点的值。中序遍历序列中，左子树的节点的值位于根节点的值的左边，右子树的节点的值位</p>
+<p>于根节点的值的右边。</p>
+<p>递归解法：</p>
+<p>（1）如果前序遍历为空或中序遍历为空或节点个数小于等于0，返回NULL。</p>
+<p>（2）创建根节点。前序遍历的第一个数据就是根节点的数据，在中序遍历中找到根节点的位置，可分别得知左子树和右子树的前序和中序遍</p>
+<p>历序列，重建左右子树。</p>
+<p>[cpp] view plaincopy</p>
+<p>BinaryTreeNode <em> RebuildBinaryTree(int</em> pPreOrder, int<em> pInOrder, int nodeNum)<br>{<br>if(pPreOrder == NULL || pInOrder == NULL || nodeNum &lt;= 0)<br>return NULL;<br>BinaryTreeNode </em> pRoot = new BinaryTreeNode;<br>// 前序遍历的第一个数据就是根节点数据<br>pRoot-&gt;m_nValue = pPreOrder[0];<br>pRoot-&gt;m_pLeft = NULL;<br>pRoot-&gt;m_pRight = NULL;<br>// 查找根节点在中序遍历中的位置，中序遍历中，根节点左边为左子树，右边为右子树<br>int rootPositionInOrder = -1;<br>for(int i = 0; i &lt; nodeNum; i++)<br>if(pInOrder[i] == pRoot-&gt;m_nValue)<br>{<br>rootPositionInOrder = i;<br>break;<br>}<br>if(rootPositionInOrder == -1)<br>{<br>throw std::exception(“Invalid input.”);<br>}<br>// 重建左子树<br>int nodeNumLeft = rootPositionInOrder;<br>int <em> pPreOrderLeft = pPreOrder + 1;<br>int </em> pInOrderLeft = pInOrder;<br>pRoot-&gt;m_pLeft = RebuildBinaryTree(pPreOrderLeft, pInOrderLeft, nodeNumLeft);<br>// 重建右子树<br>int nodeNumRight = nodeNum - nodeNumLeft - 1;<br>int <em> pPreOrderRight = pPreOrder + 1 + nodeNumLeft;<br>int </em> pInOrderRight = pInOrder + nodeNumLeft + 1;<br>pRoot-&gt;m_pRight = RebuildBinaryTree(pPreOrderRight, pInOrderRight, nodeNumRight);<br>return pRoot;<br>}  </p>
+<p>同样，有中序遍历序列和后序遍历序列，类似的方法可重建二叉树，但前序遍历序列和后序遍历序列不同恢复一棵二叉树，证明略。</p>
+<p>14.判断二叉树是不是完全二叉树</p>
+<p>若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边，这就是完全</p>
+<p>二叉树。</p>
+<p>有如下算法，按层次（从上到下，从左到右）遍历二叉树，当遇到一个节点的左子树为空时，则该节点右子树必须为空，且后面遍历的节点左</p>
+<p>右子树都必须为空，否则不是完全二叉树。</p>
+<p>[cpp] view plaincopy</p>
+<p>bool IsCompleteBinaryTree(BinaryTreeNode <em> pRoot)<br>{<br>if(pRoot == NULL)<br>return false;<br>queue&lt;BinaryTreeNode </em>&gt; q;<br>q.push(pRoot);<br>bool mustHaveNoChild = false;<br>bool result = true;<br>while(!q.empty())<br>{<br>BinaryTreeNode * pNode = q.front();<br>q.pop();<br>if(mustHaveNoChild) // 已经出现了有空子树的节点了，后面出现的必须为叶节点（左右子树都为空）<br>{<br>if(pNode-&gt;m_pLeft != NULL || pNode-&gt;m_pRight != NULL)<br>{<br>result = false;<br>break;<br>}<br>}<br>else<br>{<br>if(pNode-&gt;m_pLeft != NULL &amp;&amp; pNode-&gt;m_pRight != NULL)<br>{<br>q.push(pNode-&gt;m_pLeft);<br>q.push(pNode-&gt;m_pRight);<br>}<br>else if(pNode-&gt;m_pLeft != NULL &amp;&amp; pNode-&gt;m_pRight == NULL)<br>{<br>mustHaveNoChild = true;<br>q.push(pNode-&gt;m_pLeft);<br>}<br>else if(pNode-&gt;m_pLeft == NULL &amp;&amp; pNode-&gt;m_pRight != NULL)<br>{<br>result = false;<br>break;<br>}<br>else<br>{<br>mustHaveNoChild = true;<br>}<br>}<br>}<br>return result;<br>}  </p>
+
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
@@ -249,7 +423,7 @@
 </nav>
 
         <div class="duoshuo">
-<div class="ds-thread" data-thread-key="2016/03/05/My-New-Post/" data-title="My New Post" data-url="http://yoursite.com/2016/03/05/My-New-Post/"></div>
+<div class="ds-thread" data-thread-key="2016/03/05/My-New-Post/" data-title="iOS 二叉树题目" data-url="http://yoursite.com/2016/03/05/My-New-Post/"></div>
 <script type="text/javascript">
 var duoshuoQuery = {short_name:"duoshuo_name"};
 (function() {
